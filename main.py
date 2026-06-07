@@ -1,3 +1,5 @@
+from datetime import datetime
+
 def show_menu():
     print("\n------ Expense Tracker ------")
     print("1. Add Expense")
@@ -15,4 +17,20 @@ def main():
             print("Exiting")
             break
 
-main()
+def add_expense():
+    amount=input("Enter amount: ")
+
+    print("\nCategories:")
+    print("Food")
+    print("Transport")
+    print("Entertainment")
+    print("Other")
+
+    category=input("Enter category: ")
+    note=input("Enter note (optional): ")
+
+    date=datetime.now().strftime("%Y-%m-%d")
+
+    with open("expenses.txt", "a") as file:
+        file.write(f"{date}, {category}, {amount}, {note}\n")
+    print("Expenses added sucessfully!")
