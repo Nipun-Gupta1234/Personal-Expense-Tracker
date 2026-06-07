@@ -7,16 +7,6 @@ def show_menu():
     print("3. Filter By Category")
     print("4. Exit")
 
-def main():
-    while True:
-        show_menu()
-
-        choice=input("Enter choice: ")
-
-        if choice=="4":
-            print("Exiting")
-            break
-
 def add_expense():
     amount=input("Enter amount: ")
 
@@ -34,3 +24,20 @@ def add_expense():
     with open("expenses.txt", "a") as file:
         file.write(f"{date}, {category}, {amount}, {note}\n")
     print("Expenses added sucessfully!")
+
+def view_expenses():
+    try:
+        with open("Expenses.txt", "r") as file:
+            total=0
+
+            print("\nDate\t\tCategory\tAmount\tNote")
+            print("-"*60)
+
+            for line in file:
+                date, category, amount, note=line.strip().split(",")
+                print(f"{date}\t{category}\t{amount}\t{note}")
+                total+=float(amount)
+            print("-"*60)
+            print(f"Total expense={total}")
+    except FileNotFoundError:
+        print("No expenses found")
