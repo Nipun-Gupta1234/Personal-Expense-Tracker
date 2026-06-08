@@ -8,7 +8,7 @@ def show_menu():
     print("4. Exit")
 
 def add_expense():
-    amount=input("Enter amount: ")
+    amount = input("Enter amount: ").strip()
 
     print("\nCategories:")
     print("Food")
@@ -16,75 +16,83 @@ def add_expense():
     print("Entertainment")
     print("Other")
 
-    category=input("Enter category: ")
-    note=input("Enter note (optional): ")
+    category = input("Enter category: ").strip()
+    note = input("Enter note (optional): ").strip()
+    if not note:
+        note = "N/A"
 
-    date=datetime.now().strftime("%Y-%m-%d")
+    date = datetime.now().strftime("%Y-%m-%d")
 
     with open("expenses.txt", "a") as file:
-        file.write(f"{date}, {category}, {amount}, {note}\n")
-    print("Expenses added sucessfully!")
+        file.write(f"{date},{category},{amount},{note}\n")
+    print("Expenses added successfully!")
 
 def view_expenses():
     try:
-        with open("Expenses.txt", "r") as file:
-            total=0
 
-            print("\nDate\t\tCategory\tAmount\tNote")
-            print("-"*60)
+        with open("expenses.txt", "r") as file:
+            total = 0
+
+            print(f"\n{'Date':<15}{'Category':<15}{'Amount':<12}{'Note'}")
+            print("-" * 55)
 
             for line in file:
-                date, category, amount, note=line.strip().split(",")
-                print(f"{date}\t{category}\t{amount}\t{note}")
-                total+=float(amount)
-            print("-"*60)
-            print(f"Total expense={total}")
+                if not line.strip():
+                    continue
+                date, category, amount, note = line.strip().split(",")
+                print(f"{date:<15}{category:<15}{amount:<12}{note}")
+                total += float(amount)
+                
+            print("-" * 55)
+            print(f"Total expense = {total}")
     except FileNotFoundError:
         print("No expenses found")
 
 def filter_expenses():
-    wanted_category=input("Enter category: ")
+    wanted_category = input("Enter category: ").strip()
 
     try:
-        with open("expenses.txt","r") as file:
-            subtotal=0
-            found=False
+        with open("expenses.txt", "r") as file:
+            subtotal = 0
+            found = False
 
-            print("\nDate\t\tAmount\tNote")
-            print("-" * 60)
+            print(f"\n{'Date':<15}{'Amount':<12}{'Note'}")
+            print("-" * 40)
 
             for line in file:
-                date, category, amount, note=line.strip().split(",")
-                if category.lower()==wanted_category.lower():
-                    print(f"{date}\t{amount}\t{note}")
-                    subtotal+=float(amount)
-                    found=True
+                if not line.strip():
+                    continue
+                date, category, amount, note = line.strip().split(",")
+                if category.lower() == wanted_category.lower():
+                    print(f"{date:<15}{amount:<12}{note}")
+                    subtotal += float(amount)
+                    found = True
 
             if found:
-                print("-"*60)
-                print(f"Subtotal={subtotal}")
-
+                print("-" * 40)
+                print(f"Subtotal = {subtotal}")
             else:
                 print("No expenses found in this category")
 
     except FileNotFoundError:
         print("No expenses found")
 
-    def main():
-        while True:
-            show_menu()
-            choice=input("Enter choice: ")
+def main():
+    while True:
+        show_menu()
+        choice = input("Enter choice: ").strip()
 
-            if choice=="1":
-                add_expense()
-            elif choice=="2":
-                view_expenses()
-            elif choice=="3":
-                filter_expenses()
-            elif choice=="4":
-                print("Exiting...")
-                break
-            else:
-                print("Invalid choice")
+        if choice == "1":
+            add_expense()
+        elif choice == "2":
+            view_expenses()
+        elif choice == "3":
+            filter_expenses()
+        elif choice == "4":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice")
 
+if __name__ == "__main__":
     main()

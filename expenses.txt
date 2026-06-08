@@ -1,0 +1,5 @@
+
+2026-06-08,Food,500,Burger
+2026-06-08,Transport,200,Metro
+2026-06-08,Entertainment,300,Netflix
+2026-06-08,Transport,150,Bus
